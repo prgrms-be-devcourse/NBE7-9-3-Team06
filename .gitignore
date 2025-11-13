@@ -17,3 +17,6 @@ backend/build/
 
 # package-lock
 frontend/package-lock.json
+
+#macOS 시스템 파일
+.DS_Store
