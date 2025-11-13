@@ -1,0 +1,88 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    hikari:
+      auto-commit: false
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+  http:
+    codecs:
+      max-in-memory-size: 16MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MY_EMAIL}
+    password: ${APP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connection timeout: 5000
+          timeout: 5000
+          write timeout: 5000
+      auth-code-expiration-minutes: 3  # 3분
+
+cloud:
+  aws:
+    s3:
+      bucket: ${cloud.aws.s3.bucket}
+    credentials:
+      access-key: ${cloud.aws.credentials.access-key}
+      secret-key: ${cloud.aws.credentials.secret-key}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+
+import:
+  enabled: false         # 로컬 최초 적재 시 true, 이후 false로 끄기
+  base-url: https://api.kcisa.kr/openapi/API_TOU_050/request
+  service-key: ${KCISA_SERVICE_KEY}
+  page-size: ${KCISA_PAGE_SIZE}
+  sleep-ms: ${KCISA_SLEEP_MS}
+  max-in-memory-mb: ${KCISA_MAX_IN_MEMORY_MB}
+
+springdoc:
+  default-produces-media-type: application/json
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
+    org.springframework.transaction.interceptor: TRACE
+    com.rest1: DEBUG
+
+jwt:
+  secret-key: ${jwt.secret-key}
+  access-expiration-ms: "#{1000L * 60 * 60}" # 60분
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  health:
+    redis:
+      enabled: false
