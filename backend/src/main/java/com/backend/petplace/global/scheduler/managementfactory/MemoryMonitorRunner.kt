@@ -2,7 +2,6 @@ package com.backend.petplace.global.scheduler.managementfactory
 
 import com.sun.management.OperatingSystemMXBean
 import com.zaxxer.hikari.HikariDataSource
-import lombok.extern.slf4j.Slf4j
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -21,7 +20,6 @@ import kotlin.concurrent.Volatile
 //           끼워넣는다 = 병렬인 건 X. 그냥 대상 메서드 전후로 추가 실행 (순차 실행).
 //           이걸 "프록시 기반 실행 흐름을 만든다"라고 표현.
 //   Component: 스프링 빈으로 등록하기 위한 어노테이션.
-@Slf4j
 @Aspect
 @Order(1) //가장 먼저 실행
 @Component
