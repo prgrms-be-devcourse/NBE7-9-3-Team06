@@ -1,5 +1,3 @@
-package com.backend.petplace.domain.product.dto.response;
+package com.backend.petplace.domain.product.dto.response
 
-public class ProductResponse {
-
-}
+class ProductResponse

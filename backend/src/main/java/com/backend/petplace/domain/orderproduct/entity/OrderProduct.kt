@@ -1,66 +1,47 @@
-package com.backend.petplace.domain.orderproduct.entity;
+package com.backend.petplace.domain.orderproduct.entity
 
-import com.backend.petplace.domain.order.entity.Order;
-import com.backend.petplace.domain.product.entity.Product;
-import com.backend.petplace.global.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.backend.petplace.domain.order.entity.Order
+import com.backend.petplace.domain.product.entity.Product
+import com.backend.petplace.global.entity.BaseEntity
+import jakarta.persistence.*
 
 @Entity
-@Getter
-@NoArgsConstructor
-public class OrderProduct extends BaseEntity {
+class OrderProduct private constructor(
+    @JoinColumn(name = "orderId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    var _order: Order,
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long orderProductId;
+    @JoinColumn(name = "productId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    var _product: Product,
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "orderId", nullable = false)
-  Order order;
+    @Column(name = "quantity", nullable = false)
+    private var _quantity: Long
+) : BaseEntity() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private val orderProductId: Long? = null
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "productId", nullable = false)
-  Product product;
+    val order: Order get() = _order
+    val product: Product get() = _product
+    val quantity: Long get() = _quantity
 
-  private long quantity;
+    fun setOrder(order: Order) {
+        //기존 order와의 연관관계 제거
+        _order.removeOrderProduct(this)
 
-  @Builder
-  private OrderProduct(Order order, Product product, long quantity) {
-    this.order = order;
-    this.product = product;
-    this.quantity = quantity;
-  }
+        //새로운 order와의 연관관계 설정
+        this._order = order
 
-  //정적 팩토리 메서드를 통한 orderProduct 객체 생성
-  public static OrderProduct createOrderProduct(Order order, Product product, long quantity) {
-    return OrderProduct.builder()
-        .order(order)
-        .product(product)
-        .quantity(quantity)
-        .build();
-  }
-
-  public void setOrder(Order order) {
-    //기존 order와의 연관관계 제거
-    if (this.order != null) {
-      this.order.getOrderProducts().remove(this);
+        //새로운 order의 orderProducts 리스트에 현재 객체 추가
+        order.addOrderProduct(this)
     }
 
-    //새로운 order와의 연관관계 설정
-    this.order = order;
-
-    //새로운 order의 orderProducts 리스트에 현재 객체 추가
-    if (order != null && !order.getOrderProducts().contains(this)) {
-      order.getOrderProducts().add(this);
+    companion object {
+        fun createOrderProduct(order: Order, product: Product, quantity: Long): OrderProduct {
+            val op = OrderProduct(order, product, quantity)
+            order.addOrderProduct(op)
+            return op
+        }
     }
-  }
 }

@@ -1,103 +1,83 @@
-package com.backend.petplace.domain.order.entity;
+package com.backend.petplace.domain.order.entity
 
-import com.backend.petplace.domain.orderproduct.entity.OrderProduct;
-import com.backend.petplace.domain.user.entity.User;
-import com.backend.petplace.global.entity.BaseEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.backend.petplace.domain.orderproduct.entity.OrderProduct
+import com.backend.petplace.domain.user.entity.User
+import com.backend.petplace.global.entity.BaseEntity
+import jakarta.persistence.*
+import jakarta.validation.constraints.NotNull
+import java.time.LocalDateTime
 
 @Entity
-@Getter
-@NoArgsConstructor
 @Table(name = "orders")
-public class Order extends BaseEntity {
+class Order (
+    @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private var user: User,
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long orderId;
+    @Column(name = "total_price", nullable = true)
+    private var totalPrice: Int,
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "userId", nullable = false)
-  private User user;
+    @Enumerated(EnumType.STRING)
+    private var orderStatus: @NotNull OrderStatus
+) : BaseEntity() {
 
-  @NotNull
-  @Min(0)
-  private Integer totalPrice;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private val orderId: Long? = null
 
-  @NotNull
-  @Enumerated(EnumType.STRING)
-  private OrderStatus orderStatus;
+    @OneToMany(mappedBy = "_order", cascade = [CascadeType.ALL])
+    private val orderProducts: MutableList<OrderProduct> = mutableListOf()
 
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-  private List<OrderProduct> orderProducts = new ArrayList<>();
+    val id: Long? get() = orderId
+    val owner: User
+        get() = user
+    val products: List<OrderProduct> get() = orderProducts.toList()
+    val status: OrderStatus get() = orderStatus
+    val price: Int get() = totalPrice
+    // 충돌 없이 lastModified 접근
+    val lastModified: LocalDateTime?
+        get() = super.readModifiedDate()
 
-  @Builder
-  public Order(User user, Integer totalPrice, OrderStatus orderStatus) {
-    this.user = user;
-    this.totalPrice = totalPrice;
-    this.orderStatus = orderStatus;
-  }
-
-  //정적 팩토리 메서드를 통한 Order 객체 생성
-  public static Order createOrder(User user, Integer totalPrice) {
-    return Order.builder()
-        .user(user)
-        .totalPrice(totalPrice)
-        .orderStatus(OrderStatus.ORDERED)
-        .build();
-  }
-
-  //객체 생성 후 orderProducts에 order 추가 메소드
-  public void addOrderProducts(List<OrderProduct> orderProducts) {
-    for (OrderProduct orderProduct : orderProducts) {
-      addOrderProduct(orderProduct);
-    }
-  }
-
-  private void addOrderProduct(OrderProduct orderProduct) {
-    this.orderProducts.add(orderProduct);
-    orderProduct.setOrder(this);
-  }
-
-  //객체 생성 후 orders에 order 추가 메소드
-  public void setUser(User user) {
-    // 기존 user와의 연관관계 제거
-    if (this.user != null) {
-      this.user.getOrders().remove(this);
+    //객체 생성 후 orderProducts에 order 추가 메소드
+    internal fun addOrderProducts(orderProducts: List<OrderProduct>) {
+        orderProducts.forEach { addOrderProduct(it) }
     }
 
-    // 새로운 user와의 연관관계 설정
-    this.user = user;
-
-    // 새로운 user의 orders 리스트에 현재 객체 추가
-    if (user != null && !user.getOrders().contains(this)) { // 아직 연결 안 되어 있으면
-      user.getOrders().add(this);        // User 쪽 리스트에도 추가
+    internal fun addOrderProduct(orderProduct: OrderProduct) {
+        if (!orderProducts.contains(orderProduct)) {
+            orderProducts.add(orderProduct)
+        }
     }
-  }
 
-  public void cancelOrder() {
+    internal fun removeOrderProduct(orderProduct: OrderProduct) {
+        orderProducts.remove(orderProduct)
+    }
 
-    this.orderStatus = OrderStatus.CANCELED;
-  }
+    //객체 생성 후 orders에 order 추가 메소드
+    fun setUser(user: User) {
+        // 기존 user와의 연관관계 제거
+        this.user.getOrders().remove(this)
 
-  public void setOrderStatusDelivered() {
-    this.orderStatus = OrderStatus.DELIVERED;
-  }
+        // 새로운 user와의 연관관계 설정
+        this.user = user
+
+        // 새로운 user의 orders 리스트에 현재 객체 추가
+        if (!user.getOrders().contains(this)) { // 아직 연결 안 되어 있으면
+            user.getOrders().add(this) // User 쪽 리스트에도 추가
+        }
+    }
+
+    fun cancelOrder() {
+        this.orderStatus = OrderStatus.CANCELED
+    }
+
+    fun setOrderStatusDelivered() {
+        this.orderStatus = OrderStatus.DELIVERED
+    }
+
+    companion object {
+        fun createOrder(user: User, totalPrice: Int): Order {
+            return Order(user, totalPrice, OrderStatus.ORDERED)
+        }
+    }
 }

@@ -1,10 +1,11 @@
-package com.backend.petplace.domain.product.service;
+package com.backend.petplace.domain.product.service
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.backend.petplace.domain.product.repository.ProductRepository
+import org.springframework.stereotype.Service
 
 @Service
-@RequiredArgsConstructor
-public class ProductService {
-
+class ProductService(
+    private val productRepository: ProductRepository
+) {
+    fun getAllProducts() = productRepository.findAll()
 }

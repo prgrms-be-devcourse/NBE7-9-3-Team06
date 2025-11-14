@@ -1,51 +1,50 @@
-package com.backend.petplace.domain.product.entity;
+package com.backend.petplace.domain.product.entity
 
-import com.backend.petplace.global.entity.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.backend.petplace.global.entity.BaseEntity
+import jakarta.persistence.*
 
 @Entity
-@Getter
-@NoArgsConstructor
-public class Product extends BaseEntity {
+class Product(
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long productId;
+    @Column(name = "product_name", nullable = false)
+    private var _productName: String = "",
 
-  @Column(nullable = false)
-  private String productName;
+    @Column(name = "price", nullable = false)
+    @Access(AccessType.FIELD)
+    private var _price: Long = 0L,
 
-  @Column(nullable = false)
-  private Long price;
+    @Column(name = "stock", nullable = false)
+    private var _stock: Long = 0L,
 
-  @Column(nullable = false)
-  private Long stock;
+    @Column(name = "description")
+    var description: String? = null
+) : BaseEntity() {
 
-  private String description;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val productId: Long? = null
 
+    // 외부에서 읽기 전용으로 제공
+    val productName: String
+        get() = _productName
 
-  @Builder
-  public Product(String productName, Long price, Long stock, String description) {
-    this.productName = productName;
-    this.price = price;
-    this.stock = stock;
-    this.description = description;
-  }
+    val price: Long
+        get() = _price
 
-  //정적 팩토리 메서드를 통한 product 객체 생성
-  public static Product createProduct(String productName, Long price, Long stock, String description) {
-    return Product.builder()
-        .productName(productName)
-        .price(price)
-        .stock(stock)
-        .description(description)
-        .build();
-  }
+    val stock: Long
+        get() = _stock
+
+    companion object {
+        fun create(
+            productName: String,
+            price: Long,
+            stock: Long,
+            description: String? = null
+        ) = Product().apply {
+            _productName = productName
+            _price = price
+            _stock = stock
+            this.description = description
+        }
+    }
 }

@@ -1,7 +1,7 @@
-package com.backend.petplace.domain.order.entity;
+package com.backend.petplace.domain.order.entity
 
-public enum OrderStatus {
-  ORDERED,
-  DELIVERED,
-  CANCELED
+enum class OrderStatus {
+    ORDERED,
+    DELIVERED,
+    CANCELED
 }
