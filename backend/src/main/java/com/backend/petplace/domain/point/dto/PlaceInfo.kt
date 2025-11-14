@@ -15,6 +15,7 @@ data class PlaceInfo(
     val fullAddress: String
 ) {
     companion object {
+        @JvmStatic
         fun fromProjection(placeId: Long, placeName: String, address: String): PlaceInfo {
             return PlaceInfo(placeId, placeName, address)
         }

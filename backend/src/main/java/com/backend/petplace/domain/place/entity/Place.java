@@ -117,4 +117,80 @@ public class Place extends BaseEntity {
     this.longitude = lng;
     this.rawDescription = rawDescription;
   }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getUniqueKey() {
+    return uniqueKey;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public Category1Type getCategory1() {
+    return category1;
+  }
+
+  public Category2Type getCategory2() {
+    return category2;
+  }
+
+  public String getOpeningHours() {
+    return openingHours;
+  }
+
+  public String getClosedDays() {
+    return closedDays;
+  }
+
+  public Boolean getPetAllowed() {
+    return petAllowed;
+  }
+
+  public Boolean getParking() {
+    return parking;
+  }
+
+  public String getPetRestriction() {
+    return petRestriction;
+  }
+
+  public String getTel() {
+    return tel;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public String getPostalCode() {
+    return postalCode;
+  }
+
+  public Double getLatitude() {
+    return latitude;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public Double getLongitude() {
+    return longitude;
+  }
+
+  public String getRawDescription() {
+    return rawDescription;
+  }
+
+  public Double getAverageRating() {
+    return averageRating;
+  }
+
+  public Integer getTotalReviewCount() {
+    return totalReviewCount;
+  }
 }

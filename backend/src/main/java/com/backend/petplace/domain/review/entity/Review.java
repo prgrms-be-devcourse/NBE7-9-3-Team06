@@ -67,4 +67,32 @@ public class Review extends BaseEntity {
         .imageUrl(imageUrl)
         .build();
   }
+
+  public Long getId() {
+    return id;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public Place getPlace() {
+    return place;
+  }
+
+  public Point getPoint() {
+    return point;
+  }
+
+  public int getRating() {
+    return rating;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
 }

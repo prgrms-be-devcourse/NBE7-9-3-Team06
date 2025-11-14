@@ -49,13 +49,12 @@ class Point (
 
 ) : BaseEntity() {
     companion object {
+        @JvmStatic
         fun createFromReview(review: Review): Point {
             val hasImage = !review.imageUrl.isNullOrBlank()
 
-            val amount =
-                if (hasImage) PointPolicy.REVIEW_PHOTO_POINTS.getValue() else PointPolicy.REVIEW_TEXT_POINTS.getValue()
-            val description =
-                if (hasImage) PointDescription.REVIEW_PHOTO else PointDescription.REVIEW_TEXT
+            val amount = if (hasImage) PointPolicy.REVIEW_PHOTO_POINTS.value else PointPolicy.REVIEW_TEXT_POINTS.value
+            val description = if (hasImage) PointDescription.REVIEW_PHOTO else PointDescription.REVIEW_TEXT
 
             return Point(
                 user = review.user,

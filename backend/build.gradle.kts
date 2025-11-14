@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.5.6"
@@ -70,6 +72,9 @@ dependencies {
 	//// Spring Boot Actuator
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation(kotlin("stdlib-jdk8"))
+
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 }
 
 tasks.withType<Test> {
