@@ -52,6 +52,7 @@ data class MyReviewResponse(
     // 이미지 URL 교체용 유틸리티 메서드 (copy 활용)
     // 기존 객체는 그대로 두고, imageUrl만 바꾼 새 객체를 반환
     companion object {
+        @JvmStatic
         fun withFullImageUrl(dto: MyReviewResponse, fullImageUrl: String?): MyReviewResponse {
             return dto.copy(imageUrl = fullImageUrl)
         }

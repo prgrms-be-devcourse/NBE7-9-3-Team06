@@ -39,12 +39,12 @@ public class ReviewService {
     Review review = Review.createNewReview(user, place, request.getContent(), request.getRating(),
         imageUrl);
     Review savedReview = reviewRepository.save(review);
-    place.updateReviewStats(savedReview.rating);
+    place.updateReviewStats(savedReview.getRating());
 
     PointAddResult result = pointService.addPointsForReview(user, savedReview);
     String resultMessage = result.getMessage();
 
-    return new ReviewCreateResponse(savedReview.id, resultMessage);
+    return new ReviewCreateResponse(savedReview.getId(), resultMessage);
   }
 
   @Transactional(readOnly = true)

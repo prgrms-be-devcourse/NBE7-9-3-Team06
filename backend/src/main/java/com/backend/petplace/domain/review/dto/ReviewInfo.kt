@@ -44,6 +44,7 @@ data class ReviewInfo (
     companion object {
         // 이미지 URL 교체용 유틸리티 메서드 (copy 활용)
         // private constructor를 만들 필요 없이, copy() 메서드로 값만 바꿔서 새 객체 생성
+        @JvmStatic
         fun withFullImageUrl(dto: ReviewInfo, fullImageUrl: String?): ReviewInfo {
             return dto.copy(imageUrl = fullImageUrl)
         }
