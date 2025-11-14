@@ -13,7 +13,6 @@ import com.backend.petplace.domain.user.entity.User;
 import com.backend.petplace.domain.user.repository.UserRepository;
 import com.backend.petplace.global.exception.BusinessException;
 import com.backend.petplace.global.response.ErrorCode;
-import com.backend.petplace.global.scheduler.executiontimer.ExecutionTimer;
 import com.backend.petplace.global.scheduler.managementfactory.MemoryMonitor;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -132,8 +131,6 @@ public class OrderService {
   }
 
   // AOP Timer을 통한 메서드 실행 시간 측정용 어노테이션
-  @ExecutionTimer
-  // 여러가지 사용량 측정용 어노테이션
   @MemoryMonitor
   @Transactional
   public void updateAllOrderStatus() {
