@@ -1,20 +1,16 @@
-package com.backend.petplace.global.scheduler.managementfactory;
+package com.backend.petplace.global.scheduler.managementfactory
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryUsage;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j
+import java.lang.management.ManagementFactory
 
 @Slf4j
-public class MemoryCheck {
+object MemoryCheck {
+    fun printHeapMemory() {
+        val memoryMXBean = ManagementFactory.getMemoryMXBean()
+        val heapUsage = memoryMXBean.getHeapMemoryUsage()
 
-  public static void printHeapMemory() {
-
-    MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
-    MemoryUsage heapUsage = memoryMXBean.getHeapMemoryUsage();
-
-    long used = heapUsage.getUsed();
-    long commited = heapUsage.getCommitted();
-    long max = heapUsage.getMax();
-  }
+        val used = heapUsage.getUsed()
+        val commited = heapUsage.getCommitted()
+        val max = heapUsage.getMax()
+    }
 }
