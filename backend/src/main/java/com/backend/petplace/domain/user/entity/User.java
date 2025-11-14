@@ -26,6 +26,46 @@ import org.hibernate.annotations.BatchSize;
 @Table(name = "users")
 public class User extends BaseEntity {
 
+  public Long getId() {
+    return id;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public String getNickName() {
+    return nickName;
+  }
+
+  public String getZipcode() {
+    return zipcode;
+  }
+
+  public String getAddressDetail() {
+    return addressDetail;
+  }
+
+  public Integer getTotalPoint() {
+    return totalPoint;
+  }
+
+  public List<Order> getOrders() {
+    return orders;
+  }
+
+  public List<Pet> getPets() {
+    return pets;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "userId")
