@@ -62,23 +62,23 @@ public class KcisaImportService {
       );
     } else {
       Place e = new Place(
-          null,                         // id
-          f.uniqueKey(),                // uniqueKey
-          f.name(),                     // name
-          f.category1(),                // category1
-          f.category2(),                // category2
-          f.openingHours(),             // openingHours
-          f.closedDays(),               // closedDays
-          f.parking(),                  // parking
-          f.petAllowed(),               // petAllowed
-          f.petRestriction(),           // petRestriction
-          f.tel(),                      // tel
-          f.url(),                      // url
-          f.postalCode(),               // postalCode
-          f.address(),                  // address
-          f.latitude(),                 // latitude
-          f.longitude(),                // longitude
-          f.rawDescription(),           // rawDescription
+          null,                     // id
+          f.uniqueKey(),
+          f.name(),
+          f.category1(),
+          f.category2(),
+          f.openingHours(),
+          f.closedDays(),
+          f.parking(),
+          f.petAllowed(),
+          f.petRestriction(),
+          f.tel(),
+          f.url(),
+          f.postalCode(),
+          f.address(),
+          f.latitude(),
+          f.longitude(),
+          f.rawDescription(),
           0.0,                          // averageRating
           0                             // totalReviewCount
       );
