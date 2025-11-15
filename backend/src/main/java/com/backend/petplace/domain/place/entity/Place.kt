@@ -67,12 +67,21 @@ class Place(
     @Column(length = 1000)
     var rawDescription: String? = null,
 
-    // @Builder.Default 대체: 기본값 설정
     var averageRating: Double = 0.0,
 
     var totalReviewCount: Int = 0
 
 ) : BaseEntity() {
+
+    protected constructor() : this(
+        id = null,
+        uniqueKey = "",
+        name = "",
+        category1 = Category1Type.ETC,
+        category2 = Category2Type.ETC,
+        latitude = 0.0,
+        longitude = 0.0
+    )
 
     fun updateReviewStats(newRating: Int) {
         val totalScore = this.averageRating * this.totalReviewCount
