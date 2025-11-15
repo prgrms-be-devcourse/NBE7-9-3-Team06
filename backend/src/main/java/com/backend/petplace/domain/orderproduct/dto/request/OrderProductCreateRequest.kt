@@ -3,7 +3,7 @@ package com.backend.petplace.domain.orderproduct.dto.request
 import io.swagger.v3.oas.annotations.media.Schema
 
 @Schema(description = "주문 상품 생성 요청 DTO")
-class OrderProductCreateRequest(
+data class OrderProductCreateRequest(
     @Schema(description = "상품 ID", example = "1L")
     val productId: Long,
 
