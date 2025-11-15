@@ -17,14 +17,14 @@ public record PlaceSearchResponse(
 ) {
   public static PlaceSearchResponse from(PlaceSearchRow row) {
     return new PlaceSearchResponse(
-        row.getId(),
-        row.getName(),
-        Category2Type.valueOf(row.getCategory2()),
-        row.getLatitude(),
-        row.getLongitude(),
-        row.getDistanceMeters(),
-        row.getAverageRating(),
-        row.getAddress()
+        row.id,
+        row.name,
+        Category2Type.valueOf(row.category2),
+        row.latitude,
+        row.longitude,
+        row.distanceMeters,
+        row.averageRating,
+        row.address
     );
   }
 }
