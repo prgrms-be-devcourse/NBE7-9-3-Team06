@@ -52,33 +52,33 @@ public class KcisaImportService {
 
   /** uniqueKey 기준 업서트 */
   private void upsert(ImportParsed f) {
-    var opt = placeRepository.findByUniqueKey(f.uniqueKey());
+    var opt = placeRepository.findByUniqueKey(f.uniqueKey);
     if (opt.isPresent()) {
       Place e = opt.get();
       e.apply(
-          f.name(), f.category1(), f.category2(),
-          f.openingHours(), f.closedDays(), f.parking(), f.petAllowed(), f.petRestriction(),
-          f.tel(), f.url(), f.postalCode(), f.address(), f.latitude(), f.longitude(), f.rawDescription()
+          f.name, f.category1, f.category2,
+          f.openingHours, f.closedDays, f.parking, f.petAllowed, f.petRestriction,
+          f.tel, f.url, f.postalCode, f.address, f.latitude, f.longitude, f.rawDescription
       );
     } else {
       Place e = new Place(
           null,                     // id
-          f.uniqueKey(),
-          f.name(),
-          f.category1(),
-          f.category2(),
-          f.openingHours(),
-          f.closedDays(),
-          f.parking(),
-          f.petAllowed(),
-          f.petRestriction(),
-          f.tel(),
-          f.url(),
-          f.postalCode(),
-          f.address(),
-          f.latitude(),
-          f.longitude(),
-          f.rawDescription(),
+          f.uniqueKey,
+          f.name,
+          f.category1,
+          f.category2,
+          f.openingHours,
+          f.closedDays,
+          f.parking,
+          f.petAllowed,
+          f.petRestriction,
+          f.tel,
+          f.url,
+          f.postalCode,
+          f.address,
+          f.latitude,
+          f.longitude,
+          f.rawDescription,
           0.0,                          // averageRating
           0                             // totalReviewCount
       );
