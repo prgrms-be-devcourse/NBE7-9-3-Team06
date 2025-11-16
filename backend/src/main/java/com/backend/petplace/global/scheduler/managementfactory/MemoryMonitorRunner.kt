@@ -167,7 +167,7 @@ class MemoryMonitorRunner(// 커넥션 풀 추적용 변수 정의
                     }
                     loopCounter++
 
-                    Thread.sleep(100) // 100ms마다 샘플링 -> 오버헤드 위험하면 500~1000으로.
+                    Thread.sleep(500) // 100ms마다 샘플링 -> 오버헤드 위험하면 500~1000으로.
                 }
             } catch (ignored: InterruptedException) {
                 // 스레드 종료
@@ -180,7 +180,12 @@ class MemoryMonitorRunner(// 커넥션 풀 추적용 변수 정의
 
         // 2 - 5. 동시에, 본 스레드에선 updateAllUserStatus() 실행
         //   methodEnd: 대상 메서드인 updateAllUserStatus() 끝나면 종료 시간 저장.
-        val result = joinPoint.proceed()
+        val result = try {
+            joinPoint.proceed()
+        } finally {
+            running = false
+            sampler.join()
+        }
         val methodEnd = System.currentTimeMillis()
 
         // 3. 대상 메서드 끝나고 별도 스레드도 종료 처리 및 시간 측정
