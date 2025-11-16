@@ -34,20 +34,20 @@ public class KcisaParser {
   public ImportParsed parse(KcisaDto.Item it) {
     //  주소/우편번호
     String postal = null, addr = null;
-    if (it.address() != null) {
-      Matcher m = POSTAL_P.matcher(it.address().trim());
+    if (it.address != null) {
+      Matcher m = POSTAL_P.matcher(it.address.trim());
       if (m.find()) {
         postal = m.group(1);
         addr = m.group(2);
       } else {
-        addr = it.address().trim();
+        addr = it.address.trim();
       }
     }
 
     // 좌표
     Double lat = null, lng = null;
-    if (it.coordinates() != null) {
-      Matcher m = COORD_P.matcher(it.coordinates());
+    if (it.coordinates != null) {
+      Matcher m = COORD_P.matcher(it.coordinates);
       if (m.find()) {
         lat = Double.parseDouble(m.group(2)) * ("S".equalsIgnoreCase(m.group(1)) ? -1 : 1);
         lng = Double.parseDouble(m.group(4)) * ("W".equalsIgnoreCase(m.group(3)) ? -1 : 1);
@@ -57,8 +57,8 @@ public class KcisaParser {
     // description 토큰 파싱
     String opening = null, closed = null, petLimit = null;
     Boolean parking = null, petAllowed = null;
-    if (it.description() != null && !it.description().isBlank()) {
-      String[] tokens = it.description().split("\\|");
+    if (it.description != null && !it.description.isBlank()) {
+      String[] tokens = it.description.split("\\|");
       for (String raw : tokens) {
         String s = raw.trim();
         if (OPENING_P.matcher(s).find()) {
@@ -80,19 +80,19 @@ public class KcisaParser {
     }
 
     // tel/url
-    String tel = it.tel() == null ? null : it.tel().replaceAll("[^0-9-]", "");
-    String url = normalizeUrl(it.url());
+    String tel = it.tel == null ? null : it.tel.replaceAll("[^0-9-]", "");
+    String url = normalizeUrl(it.url);
 
     // 카테고리 매핑
-    Category1Type c1 = CategoryMapper.mapCategory1(it.category1());
-    Category2Type c2 = CategoryMapper.mapCategory2(it.category2());
+    Category1Type c1 = CategoryMapper.mapCategory1(it.category1);
+    Category2Type c2 = CategoryMapper.mapCategory2(it.category2);
 
     // uniqueKey: title + 우편번호(없으면 주소) → SHA-256 해싱
-    String uniqueKey = buildUniqueKey(it.title(), postal, addr);
+    String uniqueKey = buildUniqueKey(it.title, postal, addr);
 
     return new ImportParsed(
-        it.title(), c1, c2, opening, closed, parking, petAllowed, petLimit, tel, url, postal, addr,
-        lat, lng, it.description(), uniqueKey
+        it.title, c1, c2, opening, closed, parking, petAllowed, petLimit, tel, url, postal, addr,
+        lat, lng, it.description, uniqueKey
     );
   }
 

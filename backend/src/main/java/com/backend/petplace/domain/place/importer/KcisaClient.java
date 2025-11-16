@@ -30,8 +30,8 @@ public class KcisaClient {
         .bodyToMono(KcisaDto.class)
         .block();
 
-    if (root == null || root.response() == null || root.response().body() == null) return List.of();
-    var items = root.response().body().items();
-    return (items == null || items.item() == null) ? List.of() : items.item();
+    if (root == null || root.response == null || root.response.body == null) return List.of();
+    var items = root.response.body.items;
+    return (items == null || items.item == null) ? List.of() : items.item;
   }
 }
