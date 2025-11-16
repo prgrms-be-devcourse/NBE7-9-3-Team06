@@ -42,7 +42,7 @@ class Review (
             content: String,
             rating: Int,
             imageUrl: String?
-        ): Review? {
+        ): Review {
             return Review (
                 user = user,
                 place = place,
