@@ -1,7 +1,7 @@
 package com.backend.petplace.domain.review.service
 
 import com.amazonaws.HttpMethod
-import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.backend.petplace.domain.review.dto.response.PresignedUrlResponse
 import org.springframework.beans.factory.annotation.Value
@@ -10,7 +10,7 @@ import java.util.*
 
 @Service
 class S3Service (
-    private val amazonS3Client: AmazonS3Client,
+    private val amazonS3Client: AmazonS3,
 
     @Value("\${cloud.aws.s3.bucket}")
     private val bucket: String
