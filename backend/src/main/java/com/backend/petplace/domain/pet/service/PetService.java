@@ -4,7 +4,6 @@ import com.backend.petplace.domain.pet.dto.request.CreatePetRequest;
 import com.backend.petplace.domain.pet.dto.request.UpdatePetRequest;
 import com.backend.petplace.domain.pet.dto.response.CreatePetResponse;
 import com.backend.petplace.domain.pet.dto.response.UpdatePetResponse;
-import com.backend.petplace.domain.pet.entity.Gender;
 import com.backend.petplace.domain.pet.entity.Pet;
 import com.backend.petplace.domain.pet.repository.PetRepository;
 import com.backend.petplace.domain.user.entity.User;

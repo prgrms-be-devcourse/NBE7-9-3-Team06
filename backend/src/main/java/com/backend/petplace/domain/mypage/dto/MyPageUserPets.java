@@ -1,9 +1,7 @@
 package com.backend.petplace.domain.mypage.dto;
 
 import com.backend.petplace.domain.pet.entity.Gender;
-import com.backend.petplace.domain.pet.entity.Pet;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
