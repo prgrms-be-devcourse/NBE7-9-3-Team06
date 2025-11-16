@@ -21,7 +21,7 @@ public class KcisaClient {
   public List<KcisaDto.Item> fetchPage(int pageNo) {
     URI uri = URI.create(String.format(
         "%s?serviceKey=%s&numOfRows=%d&pageNo=%d",
-        props.baseUrl(), props.serviceKey(), props.pageSize(), pageNo
+        props.baseUrl, props.serviceKey, props.pageSize, pageNo
     ));
 
     KcisaDto root = client.get()

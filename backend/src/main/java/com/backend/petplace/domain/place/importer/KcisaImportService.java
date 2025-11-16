@@ -38,12 +38,12 @@ public class KcisaImportService {
       }
 
       // 페이징 종료 판단: 응답 아이템 수가 page-size 미만이면 마지막
-      if (items.size() < props.pageSize())
+      if (items.size() < props.pageSize)
         break;
 
       // 다음 호출 전 sleep
       try {
-        Thread.sleep(props.sleepMs());
+        Thread.sleep(props.sleepMs);
       } catch (InterruptedException ignored) {
       }
     }

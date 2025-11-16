@@ -16,7 +16,7 @@ public class WebClientConfig {
 
   @Bean(name = "kcisaWebClient")
   public WebClient kcisaWebClient() {
-    int bytes = props.maxInMemoryMb() * 1024 * 1024;
+    int bytes = props.maxInMemoryMb * 1024 * 1024;
 
     ExchangeStrategies strategies = ExchangeStrategies.builder()
         .codecs(c -> c.defaultCodecs().maxInMemorySize(bytes))
