@@ -24,7 +24,7 @@ data class PlaceInfo(
             return PlaceInfo(
                 place.id!!,
                 place.name,
-                place.address
+                place.address ?: ""
             )
         }
     }

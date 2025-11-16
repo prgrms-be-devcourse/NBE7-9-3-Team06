@@ -61,24 +61,27 @@ public class KcisaImportService {
           f.tel(), f.url(), f.postalCode(), f.address(), f.latitude(), f.longitude(), f.rawDescription()
       );
     } else {
-      Place e = Place.builder()
-          .uniqueKey(f.uniqueKey())
-          .name(f.name())
-          .category1(f.category1())
-          .category2(f.category2())
-          .openingHours(f.openingHours())
-          .closedDays(f.closedDays())
-          .parking(f.parking())
-          .petAllowed(f.petAllowed())
-          .petRestriction(f.petRestriction())
-          .tel(f.tel())
-          .url(f.url())
-          .postalCode(f.postalCode())
-          .address(f.address())
-          .latitude(f.latitude())
-          .longitude(f.longitude())
-          .rawDescription(f.rawDescription())
-          .build();
+      Place e = new Place(
+          null,                     // id
+          f.uniqueKey(),
+          f.name(),
+          f.category1(),
+          f.category2(),
+          f.openingHours(),
+          f.closedDays(),
+          f.parking(),
+          f.petAllowed(),
+          f.petRestriction(),
+          f.tel(),
+          f.url(),
+          f.postalCode(),
+          f.address(),
+          f.latitude(),
+          f.longitude(),
+          f.rawDescription(),
+          0.0,                          // averageRating
+          0                             // totalReviewCount
+      );
       placeRepository.save(e);
     }
   }
