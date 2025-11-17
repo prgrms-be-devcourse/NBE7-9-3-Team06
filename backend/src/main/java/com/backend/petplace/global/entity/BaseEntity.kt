@@ -1,5 +1,6 @@
 package com.backend.petplace.global.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
 import org.springframework.data.annotation.CreatedDate
@@ -17,21 +18,23 @@ open class BaseEntity {
     // 그러나 JPA/Hibernate가 DB에서 값을 읽어올 때도 필드에 주입하려 한다.
     // Kotlin은 val이 읽기 전용이라, setter가 없으면 JPA가 값을 넣을 수 없다.
     // 단, set을 private으로 하여 JPA/Hibernate만 접근 가능하게 하면 외부에서 변경하는 것을 막을 수 있다.
-    var createdDate: LocalDateTime? = null
-        private set
+    @Column(updatable = false)
+    open var createdDate: LocalDateTime? = null
+        protected set
 
     @LastModifiedDate
-    var modifiedDate: LocalDateTime? = null
-        private set
+    open var modifiedDate: LocalDateTime? = null
+        protected set
 
     protected fun readModifiedDate(): LocalDateTime? = modifiedDate
 
-    protected var activated: Boolean = true
+    @Column(nullable = false)
+    protected open var activated: Boolean = true
 
     fun unActivated() {
         this.activated = false
     }
 
     // Java에서 사용 가능한 getter
-    fun isActivated(): Boolean = activated
+    open fun isActivated(): Boolean = activated
 }

@@ -29,7 +29,7 @@ class ReviewController(
     @PostMapping("/presigned-url")
     override fun getPresignedUrl(
         @RequestParam filename: String
-    ): ResponseEntity<ApiResponse<PresignedUrlResponse>> {
+    ): ResponseEntity<ApiResponse<PresignedUrlResponse?>> {
         val response = s3Service.generatePresignedUrl("reviews", filename)
         return ResponseEntity.ok(ApiResponse.success(response)
         )
@@ -39,7 +39,7 @@ class ReviewController(
     override fun createReview(
         @RequestBody request: @Valid ReviewCreateRequest,
         @AuthenticationPrincipal userDetails: CustomUserDetails?
-    ): ResponseEntity<ApiResponse<ReviewCreateResponse>> {
+    ): ResponseEntity<ApiResponse<ReviewCreateResponse?>> {
 
         val user = userDetails ?: throw BusinessException(ErrorCode.NOT_LOGIN_ACCESS)
         val currentUserId = user.getUserId()
@@ -52,7 +52,7 @@ class ReviewController(
     @GetMapping("/places/{placeId}/reviews")
     override fun getReviewsByPlace(
         @PathVariable placeId: Long
-    ): ResponseEntity<ApiResponse<PlaceReviewsResponse>> {
+    ): ResponseEntity<ApiResponse<PlaceReviewsResponse?>> {
         val response = reviewService.getReviewByPlace(placeId)
         return ResponseEntity.ok(ApiResponse.success(response)
         )
@@ -61,7 +61,7 @@ class ReviewController(
     @GetMapping("/my/reviews")
     override fun getMyReviews(
         @AuthenticationPrincipal userDetails: CustomUserDetails?
-    ): ResponseEntity<ApiResponse<List<MyReviewResponse>>> {
+    ): ResponseEntity<ApiResponse<List<MyReviewResponse>?>> {
         val user = userDetails ?: throw BusinessException(ErrorCode.NOT_LOGIN_ACCESS)
         val currentUserId = user.getUserId()
 

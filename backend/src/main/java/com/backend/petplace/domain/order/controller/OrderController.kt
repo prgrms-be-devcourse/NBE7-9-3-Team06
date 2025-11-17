@@ -19,7 +19,7 @@ class OrderController(
     fun createOrder(
         @RequestBody request: OrderCreateRequest,
         @AuthenticationPrincipal userDetails: CustomUserDetails
-    ): ResponseEntity<ApiResponse<Long>> {
+    ): ResponseEntity<ApiResponse<Long?>> {
         val userId = userDetails.userId
         val orderId = orderService.createOrder(request, userId)
         return ResponseEntity.ok(ApiResponse.success(orderId))
@@ -28,7 +28,7 @@ class OrderController(
     @GetMapping
     fun getOrderById(
         @AuthenticationPrincipal userDetails: CustomUserDetails
-    ): ResponseEntity<ApiResponse<List<OrderReadByIdResponse>>> {
+    ): ResponseEntity<ApiResponse<List<OrderReadByIdResponse>?>> {
         val userId = userDetails.userId
         val responses: List<OrderReadByIdResponse> =
             orderService.getOrdersByUserId(userId)  // null 제거
@@ -39,7 +39,7 @@ class OrderController(
     fun cancelOrder(
         @PathVariable("orderid") orderId: Long,
         @AuthenticationPrincipal userDetails: CustomUserDetails
-    ): ResponseEntity<ApiResponse<Void>> {
+    ): ResponseEntity<ApiResponse<Void?>> {
         val userId = userDetails.userId
         orderService.cancelOrder(userId, orderId)
         return ResponseEntity.ok(ApiResponse.success())
@@ -48,7 +48,7 @@ class OrderController(
     @GetMapping("/points")
     fun getUserPoints(
         @AuthenticationPrincipal userDetails: CustomUserDetails
-    ): ResponseEntity<ApiResponse<Int>> {
+    ): ResponseEntity<ApiResponse<Int?>> {
         val userId = userDetails.userId
         val points = orderService.getUserPoints(userId)
         return ResponseEntity.ok(ApiResponse.success(points))

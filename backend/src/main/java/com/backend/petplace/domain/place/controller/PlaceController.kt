@@ -25,7 +25,7 @@ class PlaceController(
         @RequestParam(required = false) radiusKm: Int?,
         @RequestParam(required = false) category2: List<Category2Type>?,
         @RequestParam(required = false) keyword: String?
-    ): ResponseEntity<ApiResponse<List<PlaceSearchResponse>>> {
+    ): ResponseEntity<ApiResponse<List<PlaceSearchResponse>?>> {
 
         val results = placeService.searchPlaces(lat, lon, radiusKm, category2, keyword)
         return ResponseEntity.ok(ApiResponse.success(results))
@@ -34,7 +34,7 @@ class PlaceController(
     @GetMapping("/{placeId}")
     override fun getPlaceDetail(
         @PathVariable @Positive placeId: Long
-    ): ResponseEntity<ApiResponse<PlaceDetailResponse>> {
+    ): ResponseEntity<ApiResponse<PlaceDetailResponse?>> {
         val detail = placeService.getPlaceDetail(placeId)
         return ResponseEntity.ok(ApiResponse.success(detail))
     }
