@@ -15,7 +15,7 @@ data class UserSignupRequest(
     @field:NotBlank(message = "비밀번호는 필수입니다.")
     @field:Size(min = 8, max = 12, message = "비밀번호는 8 ~ 12자까지 가능합니다.")
     @field:Pattern(
-        regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-=/])",
+        regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-=/])[A-Za-z\\d!@#$%^&*()_+{}\\[\\]:;<>,.?~\\-=/]+$",
         message = "영어, 숫자, 특수문자를 모두 포함해야 합니다."
     )
     val password: String?,
