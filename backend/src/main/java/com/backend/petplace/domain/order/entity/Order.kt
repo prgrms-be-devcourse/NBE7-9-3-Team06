@@ -9,17 +9,17 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(name = "orders")
-class Order (
+class Order () : BaseEntity() {
+
     @JoinColumn(name = "userId", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
-    private var user: User,
+    private lateinit var user: User
 
-    @Column(name = "total_price", nullable = true)
-    private var totalPrice: Int,
+    @Column(name = "total_price", nullable = false)
+    private var totalPrice: Int = 0
 
     @Enumerated(EnumType.STRING)
-    private var orderStatus: @NotNull OrderStatus
-) : BaseEntity() {
+    private var orderStatus: @NotNull OrderStatus = OrderStatus.ORDERED
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,9 +75,14 @@ class Order (
         this.orderStatus = OrderStatus.DELIVERED
     }
 
+    private constructor(user: User, totalPrice: Int) : this() {
+        this.user = user
+        this.totalPrice = totalPrice
+    }
+
     companion object {
         fun createOrder(user: User, totalPrice: Int): Order {
-            return Order(user, totalPrice, OrderStatus.ORDERED)
+            return Order(user, totalPrice)
         }
     }
 }
