@@ -47,7 +47,7 @@ public class UserService {
             (request.getEmail(), request.getAuthCode())
         .orElseThrow(() -> new BusinessException(ErrorCode.AUTH_CODE_NOT_FOUND));
 
-    if (emailAuthCode.isVerified()) {
+    if (emailAuthCode.getVerified()) {
       emailAuthCodeRepository.delete(emailAuthCode);
       return;
     }

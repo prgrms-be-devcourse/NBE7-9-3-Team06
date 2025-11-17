@@ -107,7 +107,7 @@ public class EmailAuthCodeService {
     }
 
     // 성공하면 인증번호 값을 true로 변경
-    if (!emailAuthCode.isVerified()) {
+    if (!emailAuthCode.getVerified()) {
       emailAuthCode.markVerifiedTrue();
     }
     return new BoolResultResponse(true);
