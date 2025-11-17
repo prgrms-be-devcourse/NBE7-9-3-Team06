@@ -35,7 +35,7 @@ public class UserService {
     // 이메일 인증 체크
     checkAuthCode(request);
 
-    User user = User.create(request, passwordEncoder.encode(request.getPassword()));
+    User user = User.Companion.create(request, passwordEncoder.encode(request.getPassword()));
     userRepository.save(user);
 
     return new UserSignupResponse(user.getId());
