@@ -56,14 +56,14 @@ class Order (
     //객체 생성 후 orders에 order 추가 메소드
     fun setUser(user: User) {
         // 기존 user와의 연관관계 제거
-        this.user.getOrders().remove(this)
+        this.user.orders.remove(this)
 
         // 새로운 user와의 연관관계 설정
         this.user = user
 
         // 새로운 user의 orders 리스트에 현재 객체 추가
-        if (!user.getOrders().contains(this)) { // 아직 연결 안 되어 있으면
-            user.getOrders().add(this) // User 쪽 리스트에도 추가
+        if (!user.orders.contains(this)) { // 아직 연결 안 되어 있으면
+            user.orders.add(this) // User 쪽 리스트에도 추가
         }
     }
 
