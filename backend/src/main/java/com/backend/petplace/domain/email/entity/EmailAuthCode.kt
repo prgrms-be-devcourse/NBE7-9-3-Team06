@@ -19,7 +19,6 @@ class EmailAuthCode(
     val expiredAt: LocalDateTime,
 ) {
     companion object {
-        @JvmStatic
         fun create(email: String ,authCode: String ,authCodeExpirationTime: Long): EmailAuthCode{
             return EmailAuthCode(
                 email = email,
