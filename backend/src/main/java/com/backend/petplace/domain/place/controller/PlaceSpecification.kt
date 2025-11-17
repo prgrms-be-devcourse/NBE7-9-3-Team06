@@ -69,7 +69,7 @@ interface PlaceSpecification {
             example = "동물병원"
         )
         keyword: String?
-    ): ResponseEntity<ApiResponse<List<PlaceSearchResponse>>>
+    ): ResponseEntity<ApiResponse<List<PlaceSearchResponse>?>>
 
     @ApiErrorCodeExamples(ErrorCode.NOT_FOUND_PLACE)
     @Operation(summary = "장소 상세 조회", description = "장소 ID로 상세 정보를 조회합니다.")
@@ -81,5 +81,5 @@ interface PlaceSpecification {
         )
         @Positive
         placeId: Long
-    ): ResponseEntity<ApiResponse<PlaceDetailResponse>>
+    ): ResponseEntity<ApiResponse<PlaceDetailResponse?>>
 }
