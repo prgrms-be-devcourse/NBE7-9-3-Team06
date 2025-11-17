@@ -58,7 +58,7 @@ class OrderService(
             .orElseThrow { BusinessException(ErrorCode.NOT_FOUND_MEMBER) }
 
     private fun checkLackOfPoint(user: User, totalPrice: Int) {
-        if (user.getTotalPoint() < totalPrice) {
+        if (user.totalPoint < totalPrice) {
             throw BusinessException(ErrorCode.NOT_ENOUGH_POINT)
         }
     }
@@ -110,7 +110,7 @@ class OrderService(
 
     fun getUserPoints(userId: Long): Int =
         userRepository.findById(userId)
-            .map { it.getTotalPoint() }
+            .map { it.totalPoint }
             .orElseThrow { BusinessException(ErrorCode.NOT_FOUND_MEMBER) }
 
     companion object {
