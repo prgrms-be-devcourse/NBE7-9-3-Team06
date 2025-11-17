@@ -19,17 +19,17 @@ class Pet (
     @JoinColumn(name = "userId")
     var user: User? = null,
 
-    @Column(name = "name")
-    var name: String? = null,
+    @Column(name = "name", nullable = false)
+    var name: String,
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
-    var gender: Gender? = null,
+    var gender: Gender,
 
-    @Column(name = "birthDate")
+    @Column(name = "birthDate", nullable = true)
     var birthDate: LocalDate? = null,
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = true)
     var type: String? = null
 
 ) : BaseEntity() {
@@ -40,7 +40,7 @@ class Pet (
             return Pet(
                 user = user,
                 name = request.name,
-                gender = request.gender?.let { Gender.valueOf(it) },
+                gender = Gender.valueOf(request.gender),
                 birthDate = request.birthDate,
                 type = request.type
             )
@@ -58,7 +58,7 @@ class Pet (
             this.name = request.name
         }
 
-        request.gender?.let {
+        request.gender.let {
             this.gender = Gender.valueOf(it)
         }
 
