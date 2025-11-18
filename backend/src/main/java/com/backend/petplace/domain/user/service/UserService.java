@@ -44,10 +44,13 @@ public class UserService {
   @Transactional
   protected void checkAuthCode(UserSignupRequest request) {
     EmailAuthCode emailAuthCode = emailAuthCodeRepository.findByEmailAndAuthCode
-            (request.getEmail(), request.getAuthCode())
-        .orElseThrow(() -> new BusinessException(ErrorCode.AUTH_CODE_NOT_FOUND));
+            (request.getEmail(), request.getAuthCode());
 
-    if (emailAuthCode.isVerified()) {
+    if (emailAuthCode == null) {
+      throw new BusinessException(ErrorCode.AUTH_CODE_NOT_FOUND);
+    }
+
+    if (emailAuthCode.getVerified()) {
       emailAuthCodeRepository.delete(emailAuthCode);
       return;
     }
