@@ -24,7 +24,7 @@ class PointController (
     ): ResponseEntity<ApiResponse<PointHistoryResponse?>?>? {
         val user = userDetails ?: throw BusinessException(ErrorCode.NOT_LOGIN_ACCESS)
 
-        val currentUserId = user.getUserId()
+        val currentUserId = user.userId
 
         val response = pointService.getPointHistory(currentUserId) // 생성자 주입이므로 !!없이 사용
 

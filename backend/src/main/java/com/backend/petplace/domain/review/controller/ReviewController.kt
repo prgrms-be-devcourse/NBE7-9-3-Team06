@@ -42,7 +42,7 @@ class ReviewController(
     ): ResponseEntity<ApiResponse<ReviewCreateResponse?>> {
 
         val user = userDetails ?: throw BusinessException(ErrorCode.NOT_LOGIN_ACCESS)
-        val currentUserId = user.getUserId()
+        val currentUserId = user.userId
 
         val response = reviewService.createReview(currentUserId, request)
         return ResponseEntity.ok(ApiResponse.create(response)
@@ -63,7 +63,7 @@ class ReviewController(
         @AuthenticationPrincipal userDetails: CustomUserDetails?
     ): ResponseEntity<ApiResponse<List<MyReviewResponse>?>> {
         val user = userDetails ?: throw BusinessException(ErrorCode.NOT_LOGIN_ACCESS)
-        val currentUserId = user.getUserId()
+        val currentUserId = user.userId
 
         val myReviews = reviewService.getMyReviews(currentUserId)
 
