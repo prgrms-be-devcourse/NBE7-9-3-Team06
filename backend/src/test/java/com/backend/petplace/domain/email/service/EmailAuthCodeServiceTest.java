@@ -1,47 +1,51 @@
-package com.backend.petplace.domain.email.service;
+package com.backend.petplace.domain.email.service
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import com.backend.petplace.domain.email.dto.request.CheckAuthCodeRequest
+import com.backend.petplace.domain.email.entity.EmailAuthCode
+import com.backend.petplace.domain.email.repository.EmailAuthCodeRepository
+import com.backend.petplace.global.exception.BusinessException
+import com.backend.petplace.global.response.ErrorCode
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.function.Executable
+import org.mockito.InjectMocks
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.jupiter.MockitoExtension
+import java.util.*
 
-import com.backend.petplace.domain.email.dto.request.CheckAuthCodeRequest;
-import com.backend.petplace.domain.email.entity.EmailAuthCode;
-import com.backend.petplace.domain.email.repository.EmailAuthCodeRepository;
-import com.backend.petplace.global.exception.BusinessException;
-import com.backend.petplace.global.response.ErrorCode;
-import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+@ExtendWith(MockitoExtension::class)
+internal class EmailAuthCodeServiceTest {
+    @Mock
+    private val emailAuthCodeRepository: EmailAuthCodeRepository? = null
 
-@ExtendWith(MockitoExtension.class)
-class EmailAuthCodeServiceTest {
+    @InjectMocks
+    private val emailAuthCodeService: EmailAuthCodeService? = null
 
-  @Mock
-  private EmailAuthCodeRepository emailAuthCodeRepository;
+    @Test
+    fun 인증번호가_만료되었으면_예외를_던진다() {
+        // given
+        val email = "test@example.com"
+        val authCode = "ABC1234"
 
-  @InjectMocks
-  private EmailAuthCodeService emailAuthCodeService;
+        val expiredCode = EmailAuthCode.create(email, authCode, -1) // 이미 만료됨
+        val request = CheckAuthCodeRequest(email, authCode)
 
-  @Test
-  void 인증번호가_만료되었으면_예외를_던진다() {
-    // given
-    String email = "test@example.com";
-    String authCode = "ABC1234";
+        Mockito.`when`<EmailAuthCode?>(
+            emailAuthCodeRepository!!.findByEmailAndAuthCode(
+                email,
+                authCode
+            )
+        )
+            .thenReturn(Optional.of<T?>(expiredCode))
 
-    EmailAuthCode expiredCode = EmailAuthCode.create(email, authCode, -1); // 이미 만료됨
-    CheckAuthCodeRequest request = new CheckAuthCodeRequest(email, authCode);
+        // when & then
+        val exception =
+            Assertions.assertThrows<BusinessException>(BusinessException::class.java, Executable {
+                emailAuthCodeService!!.checkAuthCode(request)
+            })
 
-    when(emailAuthCodeRepository.findByEmailAndAuthCode(email, authCode))
-        .thenReturn(Optional.of(expiredCode));
-
-    // when & then
-    BusinessException exception = assertThrows(BusinessException.class, () -> {
-      emailAuthCodeService.checkAuthCode(request);
-    });
-
-    assertEquals(ErrorCode.AUTH_CODE_EXPIRED, exception.getErrorCode());
-  }
+        Assertions.assertEquals(ErrorCode.AUTH_CODE_EXPIRED, exception.errorCode)
+    }
 }
