@@ -2,9 +2,13 @@ package com.backend.petplace.domain.user.service
 
 import com.backend.petplace.domain.email.entity.EmailAuthCode
 import com.backend.petplace.domain.email.repository.EmailAuthCodeRepository
+import com.backend.petplace.domain.user.dto.request.UserLoginRequest
 import com.backend.petplace.domain.user.dto.request.UserSignupRequest
+import com.backend.petplace.domain.user.dto.response.UserLoginResponse
 import com.backend.petplace.domain.user.entity.User
 import com.backend.petplace.domain.user.repository.UserRepository
+import com.backend.petplace.global.jwt.JwtTokenProvider
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -31,6 +35,12 @@ class UserServiceTest {
     @Mock
     private lateinit var emailAuthCode: EmailAuthCode
 
+    @Mock
+    private lateinit var user: User
+
+    @Mock
+    private lateinit var jwtTokenProvider: JwtTokenProvider
+
     private lateinit var userService: UserService
 
     @BeforeEach
@@ -38,18 +48,9 @@ class UserServiceTest {
         userService = UserService(
             userRepository = userRepository,
             passwordEncoder = passwordEncoder,
-            jwtTokenProvider = org.mockito.kotlin.mock(), // JwtTokenProvider는 mock 처리
+            jwtTokenProvider = jwtTokenProvider,
             emailAuthCodeRepository = emailAuthCodeRepository
         )
-
-        // save() 호출 시 user 객체의 id를 리플렉션으로 강제 세팅
-        whenever(userRepository.save(any<User>())).thenAnswer { invocation ->
-            val user = invocation.arguments[0] as User
-            val field = user.javaClass.getDeclaredField("id")
-            field.isAccessible = true
-            field.set(user, 1L) // val이라도 리플렉션으로 값 주입 가능
-            user
-        }
     }
 
     @Test
@@ -73,10 +74,35 @@ class UserServiceTest {
             .thenReturn(emailAuthCode)
         whenever(emailAuthCode.verified).thenReturn(true)
 
+        // save() 호출 시 user 객체의 id를 리플렉션으로 강제 세팅
+        whenever(userRepository.save(any<User>())).thenAnswer { invocation ->
+            val user = invocation.arguments[0] as User
+            val field = user.javaClass.getDeclaredField("id")
+            field.isAccessible = true
+            field.set(user, 1L) // val이라도 리플렉션으로 값 주입 가능
+            user
+        }
+
         // when
         userService.signup(request)
 
         // then
         then(userRepository).should().save(any<User>())
+    }
+
+    @Test
+    fun login_success() {
+        //given
+        val request = UserLoginRequest("귀여운고양이", "asdf123!@")
+
+        whenever(userRepository.findByNickName("귀여운고양이")).thenReturn(user)
+        whenever(passwordEncoder.matches("asdf123!@", user.password)).thenReturn(true)
+        whenever(jwtTokenProvider.generateAccessToken(user.id!!)).thenReturn("It's access token")
+
+        //when
+        val response = userService.login(request)
+
+        //then
+        assertThat(response.token).isEqualTo("It's access token")
     }
 }
