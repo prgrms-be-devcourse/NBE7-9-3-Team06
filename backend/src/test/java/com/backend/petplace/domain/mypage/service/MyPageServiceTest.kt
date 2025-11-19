@@ -45,6 +45,7 @@ class MyPageServiceTest {
     @BeforeEach
     fun init() {
         user = User(
+            id = 1L,
             nickName = "user1",
             email = "user1@example.com",
             password = "pwd",
